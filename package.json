@@ -55,7 +55,6 @@
   },
   "scripts": {
     "//": "Testling doesn't have Bower installed globally.",
-    "install": "./node_modules/.bin/bower install",
     "test": "grunt test"
   }
 }
