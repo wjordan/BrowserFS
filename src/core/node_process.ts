@@ -73,7 +73,7 @@ export class Process {
    *   console.log('Starting directory: ' + process.cwd());
    *   process.chdir('/tmp');
    *   console.log('New directory: ' + process.cwd());
-   * @param [String] dir The directory to change to.
+   * @param {String} dir The directory to change to.
    */
   public chdir(dir: string): void {
     // XXX: Circular dependency hack.
