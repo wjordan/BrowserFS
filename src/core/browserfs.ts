@@ -1,7 +1,7 @@
-import buffer = require('./buffer');
+import buffer = require('buffer');
 import fs = require('./node_fs');
-import path = require('./node_path');
-import node_process = require('./node_process');
+import path = require('path');
+var node_process = process;
 import file_system = require('./file_system');
 
 /**
@@ -19,8 +19,8 @@ import file_system = require('./file_system');
  * @param {object} obj - The object to install things onto (e.g. window)
  */
 export function install(obj: any) {
-  obj.Buffer = buffer.Buffer;
-  obj.process = node_process.process;
+  obj.Buffer = Buffer;
+  obj.process = node_process;
   var oldRequire = obj.require != null ? obj.require : null;
   // Monkey-patch require for Node-style code.
   obj.require = function(arg: string) {
@@ -48,7 +48,7 @@ export function BFSRequire(module: string) {
       // The 'buffer' module has 'Buffer' as a property.
       return buffer;
     case 'process':
-      return node_process.process;
+      return node_process;
     default:
       return FileSystem[module];
   }

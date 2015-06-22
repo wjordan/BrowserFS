@@ -11,12 +11,8 @@
  */
 import BrowserFS = require('../core/browserfs');
 import fs = require('../core/node_fs');
-import buffer = require('../core/buffer');
-import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
+//import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
 import node_fs_stats = require('../core/node_fs_stats');
-
-import Buffer = buffer.Buffer;
-import BufferCoreArrayBuffer = buffer_core_arraybuffer.BufferCoreArrayBuffer;
 
 export interface Stats {
   dev: number;
@@ -119,8 +115,8 @@ class BFSEmscriptenStreamOps implements EmscriptenStreamOps {
 
   public read(stream: EmscriptenStream, buffer: Uint8Array, offset: number, length: number, position: number): number {
     // Avoid copying overhead by reading directly into buffer.
-    var bcore = new BufferCoreArrayBuffer(buffer.buffer);
-    var nbuffer = new Buffer(bcore, buffer.byteOffset + offset, buffer.byteOffset + offset + length);
+    //var bcore = new BufferCoreArrayBuffer(buffer.buffer);
+    var nbuffer = new Buffer(buffer);
     var res: number;
     try {
       res = fs.readSync(stream.nfd, nbuffer, 0, length, position);
@@ -133,8 +129,8 @@ class BFSEmscriptenStreamOps implements EmscriptenStreamOps {
 
   public write(stream: EmscriptenStream, buffer: Uint8Array, offset: number, length: number, position: number): number {
     // Avoid copying overhead; plug the buffer directly into a BufferCore.
-    var bcore = new BufferCoreArrayBuffer(buffer.buffer);
-    var nbuffer = new Buffer(bcore, buffer.byteOffset + offset, buffer.byteOffset + offset + length);
+    //var bcore = new BufferCoreArrayBuffer(buffer.buffer);
+    var nbuffer = new Buffer(buffer);
     var res: number;
     try {
       res = fs.writeSync(stream.nfd, nbuffer, 0, length, position);
@@ -188,7 +184,7 @@ class BFSEmscriptenNodeOps implements EmscriptenNodeOps {
       if (!e.code) throw e;
       throw new this.FS.ErrnoError(this.ERRNO_CODES[e.code]);
     }
-    return {
+    return <Stats>{
       dev: stat.dev,
       ino: stat.ino,
       mode: stat.mode,

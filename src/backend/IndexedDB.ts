@@ -1,11 +1,9 @@
-import buffer = require('../core/buffer');
 import browserfs = require('../core/browserfs');
 import kvfs = require('../generic/key_value_filesystem');
 import api_error = require('../core/api_error');
-import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
+//import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
 import global = require('../core/global');
-var Buffer = buffer.Buffer,
-  ApiError = api_error.ApiError,
+var ApiError = api_error.ApiError,
   ErrorCode = api_error.ErrorCode,
   /**
    * Get the indexedDB constructor for the current browser.
@@ -45,23 +43,6 @@ function onErrorHandler(cb: (e: api_error.ApiError) => void,
   };
 }
 
-/**
- * Converts a NodeBuffer into an ArrayBuffer.
- */
-function buffer2arraybuffer(buffer: NodeBuffer): ArrayBuffer {
-  // XXX: Typing hack.
-  var backing_mem: buffer_core_arraybuffer.BufferCoreArrayBuffer = <buffer_core_arraybuffer.BufferCoreArrayBuffer><any> (<buffer.BFSBuffer><any>buffer).getBufferCore();
-  if (!(backing_mem instanceof buffer_core_arraybuffer.BufferCoreArrayBuffer)) {
-    // Copy into an ArrayBuffer-backed Buffer.
-    buffer = new Buffer(this._buffer.length);
-    this._buffer.copy(buffer);
-    backing_mem = <buffer_core_arraybuffer.BufferCoreArrayBuffer><any> (<buffer.BFSBuffer><any>buffer).getBufferCore();
-  }
-  // Reach into the BC, grab the DV.
-  var dv = backing_mem.getDataView();
-  return dv.buffer;
-}
-
 export class IndexedDBROTransaction implements kvfs.AsyncKeyValueROTransaction {
   constructor(public tx: IDBTransaction, public store: IDBObjectStore) { }
 
@@ -93,7 +74,7 @@ export class IndexedDBRWTransaction extends IndexedDBROTransaction implements kv
 
   public put(key: string, data: NodeBuffer, overwrite: boolean, cb: (e: api_error.ApiError, committed?: boolean) => void): void {
     try {
-      var arraybuffer = buffer2arraybuffer(data),
+      var arraybuffer = data,
         r: IDBRequest;
       if (overwrite) {
         r = this.store.put(arraybuffer, key);

@@ -1,6 +1,5 @@
 import api_error = require('./api_error');
 import stats = require('./node_fs_stats');
-import buffer = require('./buffer');
 var ApiError = api_error.ApiError;
 var ErrorCode = api_error.ErrorCode;
 

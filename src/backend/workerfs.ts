@@ -1,5 +1,4 @@
 import file_system = require('../core/file_system');
-import buffer = require('../core/buffer');
 import api_error = require('../core/api_error');
 import file_flag = require('../core/file_flag');
 import util = require('../core/util');
@@ -7,8 +6,6 @@ import file = require('../core/file');
 import node_fs_stats = require('../core/node_fs_stats');
 import preload_file = require('../generic/preload_file');
 import browserfs = require('../core/browserfs');
-
-var Buffer = buffer.Buffer;
 
 interface IBrowserFSMessage {
   browserfsMessage: boolean;
@@ -99,14 +96,14 @@ class FileDescriptorArgumentConverter {
       if (err) {
         cb(err);
       } else {
-        stat = (<buffer.Buffer> stats.toBuffer()).toArrayBuffer();
+        stat = (<any> stats.toBuffer()).toArrayBuffer();
         // If it's a readable flag, we need to grab contents.
         if (flag.isReadable()) {
           fd.read(new Buffer(stats.size), 0, stats.size, 0, (err, bytesRead, buff) => {
             if (err) {
               cb(err);
             } else {
-              data = (<buffer.Buffer> buff).toArrayBuffer();
+              data = (<any> buff).toArrayBuffer();
               cb(null, {
                 type: SpecialArgType.FD,
                 id: id,
@@ -135,8 +132,8 @@ class FileDescriptorArgumentConverter {
 
   private _applyFdChanges(remoteFd: IFileDescriptorArgument, cb: (err: api_error.ApiError, fd?: file.File) => void): void {
     var fd = this._fileDescriptors[remoteFd.id],
-      data = new Buffer(remoteFd.data),
-      remoteStats = node_fs_stats.Stats.fromBuffer(new Buffer(remoteFd.stat));
+      data = new Buffer(<any>remoteFd.data),
+      remoteStats = node_fs_stats.Stats.fromBuffer(new Buffer(<any>remoteFd.stat));
 
     // Write data if the file is writable.
     var flag = file_flag.FileFlag.getFileFlag(remoteFd.flag);
@@ -207,12 +204,12 @@ interface IErrorArgument extends ISpecialArgument {
 function errorLocal2Remote(e: api_error.ApiError): IErrorArgument {
   return {
     type: SpecialArgType.ERROR,
-    errorData: (<buffer.Buffer> e.writeToBuffer()).toArrayBuffer()
+    errorData: (<any> e.writeToBuffer()).toArrayBuffer()
   };
 }
 
 function errorRemote2Local(e: IErrorArgument): api_error.ApiError {
-  return api_error.ApiError.fromBuffer(new Buffer(e.errorData));
+  return api_error.ApiError.fromBuffer(new Buffer(<any>e.errorData));
 }
 
 interface IStatsArgument extends ISpecialArgument {
@@ -223,12 +220,12 @@ interface IStatsArgument extends ISpecialArgument {
 function statsLocal2Remote(stats: node_fs_stats.Stats): IStatsArgument {
   return {
     type: SpecialArgType.STATS,
-    statsData: (<buffer.Buffer> stats.toBuffer()).toArrayBuffer()
+    statsData: (<any> stats.toBuffer()).toArrayBuffer()
   };
 }
 
 function statsRemote2Local(stats: IStatsArgument): node_fs_stats.Stats {
-  return node_fs_stats.Stats.fromBuffer(new Buffer(stats.statsData));
+  return node_fs_stats.Stats.fromBuffer(new Buffer(<any>stats.statsData));
 }
 
 interface IFileFlagArgument extends ISpecialArgument {
@@ -253,12 +250,12 @@ interface IBufferArgument extends ISpecialArgument {
 function bufferLocal2Remote(buff: Buffer): IBufferArgument {
   return {
     type: SpecialArgType.BUFFER,
-    data: (<buffer.Buffer> buff).toArrayBuffer()
+    data: (<any> buff).toArrayBuffer()
   };
 }
 
 function bufferRemote2Local(buffArg: IBufferArgument): Buffer {
-  return new Buffer(buffArg.data);
+  return new Buffer(<any>buffArg.data);
 }
 
 interface IAPIRequest extends IBrowserFSMessage {
@@ -290,8 +287,8 @@ class WorkerFile extends preload_file.PreloadFile {
     return {
       type: SpecialArgType.FD,
       id: this._remoteFdId,
-      data: (<buffer.Buffer> this.getBuffer()).toArrayBuffer(),
-      stat: (<buffer.Buffer> this.getStats().toBuffer()).toArrayBuffer(),
+      data: (<any> this.getBuffer()).toArrayBuffer(),
+      stat: (<any> this.getStats().toBuffer()).toArrayBuffer(),
       path: this.getPath(),
       flag: this.getFlag().getFlagString()
     };
@@ -396,7 +393,7 @@ export class WorkerFS extends file_system.BaseFileSystem implements file_system.
               return errorRemote2Local(<IErrorArgument> specialArg);
             case SpecialArgType.FD:
               var fdArg = <IFileDescriptorArgument> specialArg;
-              return new WorkerFile(this, fdArg.path, file_flag.FileFlag.getFileFlag(fdArg.flag), node_fs_stats.Stats.fromBuffer(new Buffer(fdArg.stat)), fdArg.id, new Buffer(fdArg.data));
+              return new WorkerFile(this, fdArg.path, file_flag.FileFlag.getFileFlag(fdArg.flag), node_fs_stats.Stats.fromBuffer(new Buffer(<any>fdArg.stat)), fdArg.id, new Buffer(<any>fdArg.data));
             case SpecialArgType.STATS:
               return statsRemote2Local(<IStatsArgument> specialArg);
             case SpecialArgType.FILEFLAG:

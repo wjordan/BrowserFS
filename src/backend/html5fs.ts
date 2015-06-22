@@ -4,15 +4,13 @@ import file_system = require('../core/file_system');
 import api_error = require('../core/api_error');
 import file_flag = require('../core/file_flag');
 import node_fs_stats = require('../core/node_fs_stats');
-import buffer = require('../core/buffer');
 import file = require('../core/file');
 import browserfs = require('../core/browserfs');
-import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
-import path = require('../core/node_path');
+//import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
+import path = require('path');
 import global = require('../core/global');
 import async = require('async');
 
-import Buffer = buffer.Buffer;
 import Stats = node_fs_stats.Stats;
 import FileType = node_fs_stats.FileType;
 import ApiError = api_error.ApiError;
@@ -73,6 +71,7 @@ export class HTML5FSFile extends preload_file.PreloadFile implements file.File {
         entry.createWriter((writer) => {
           // XXX: Typing hack.
           var buffer = this.getBuffer();
+/*
           var backing_mem: buffer_core_arraybuffer.BufferCoreArrayBuffer = <buffer_core_arraybuffer.BufferCoreArrayBuffer><any> (<buffer.BFSBuffer><any>buffer).getBufferCore();
           if (!(backing_mem instanceof buffer_core_arraybuffer.BufferCoreArrayBuffer)) {
             // Copy into an ArrayBuffer-backed Buffer.
@@ -84,6 +83,8 @@ export class HTML5FSFile extends preload_file.PreloadFile implements file.File {
           var dv = backing_mem.getDataView();
           // Create an appropriate view on the array buffer.
           var abv = new DataView(dv.buffer, dv.byteOffset + (<buffer.BFSBuffer><any>buffer).getOffset(), buffer.length);
+*/
+          var abv = null;
           var blob = new Blob([abv]);
           var length = blob.size;
           writer.onwriteend = () => {
@@ -378,7 +379,7 @@ export class HTML5FS extends file_system.BaseFileSystem implements file_system.F
    */
   private _makeFile(path: string, flag: file_flag.FileFlag, stat: File, data: ArrayBuffer = new ArrayBuffer(0)): HTML5FSFile {
     var stats = new Stats(FileType.FILE, stat.size);
-    var buffer = new Buffer(data);
+    var buffer = new Buffer(<any>data);
     return new HTML5FSFile(this, path, flag, stats, buffer);
   }
 

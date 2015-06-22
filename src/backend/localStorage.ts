@@ -1,11 +1,9 @@
-import buffer = require('../core/buffer');
 import browserfs = require('../core/browserfs');
 import kvfs = require('../generic/key_value_filesystem');
 import api_error = require('../core/api_error');
 import global = require('../core/global');
 
-var Buffer = buffer.Buffer,
-  ApiError = api_error.ApiError,
+var ApiError = api_error.ApiError,
   ErrorCode = api_error.ErrorCode;
 
 // Some versions of FF and all versions of IE do not support the full range of

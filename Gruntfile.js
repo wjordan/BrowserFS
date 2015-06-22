@@ -3,7 +3,7 @@ var fs = require('fs'),
   _ = require('underscore'),
   browserifyConfig = {
     // Note: Cannot use "bare" here. That's a command-line-only switch.
-    builtins: [],
+    builtins: ['path', 'buffer', 'process', 'event'],
     detectGlobals: false,
     debug: true,
     transform: [
@@ -156,7 +156,8 @@ module.exports = function(grunt) {
             // Expose what's exported in main.ts under the name BrowserFS,
             // wrapped as an UMD module.
             standalone: 'BrowserFS'
-          })
+          }),
+          external: ['path', 'buffer', 'process', 'event']
         },
         files: {
           './build/browserfs.js': './src/main.ts'

@@ -7,13 +7,12 @@ import stat = require('./node_fs_stats');
 import file = require('./file');
 import file_flag = require('./file_flag');
 
-import path = require('./node_path');
+import path = require('path');
 
-import buffer = require('./buffer');
+import buffer = require('buffer');
 
 var ApiError = api_error.ApiError;
 var ErrorCode = api_error.ErrorCode;
-var Buffer = buffer.Buffer;
 var ActionType = file_flag.ActionType;
 
 /**

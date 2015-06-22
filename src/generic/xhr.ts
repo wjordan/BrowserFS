@@ -4,12 +4,10 @@
  */
 
 import util = require('../core/util');
-import buffer = require('../core/buffer');
 import api_error = require('../core/api_error');
 
 var ApiError = api_error.ApiError;
 var ErrorCode = api_error.ErrorCode;
-var Buffer = buffer.Buffer;
 
 // See core/polyfills for the VBScript definition of these functions.
 declare var IEBinaryToArray_ByteStr: (vbarr: any) => string;

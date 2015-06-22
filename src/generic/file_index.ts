@@ -1,5 +1,5 @@
 import node_fs_stats = require('../core/node_fs_stats');
-import path = require('../core/node_path');
+import path = require('path');
 
 var Stats = node_fs_stats.Stats;
 

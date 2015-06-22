@@ -1,14 +1,12 @@
 import file = require('../core/file');
 import file_system = require('../core/file_system');
 import node_fs_stats = require('../core/node_fs_stats');
-import buffer = require('../core/buffer');
 import file_flag = require('../core/file_flag');
 import api_error = require('../core/api_error');
 import fs = require('../core/node_fs');
 
 var ApiError = api_error.ApiError;
 var ErrorCode = api_error.ErrorCode;
-var Buffer = buffer.Buffer;
 /**
  * An implementation of the File interface that operates on a file that is
  * completely in-memory. PreloadFiles are backed by a Buffer.

@@ -2,14 +2,12 @@ import file = require('./file');
 import api_error = require('./api_error');
 import file_system = require('./file_system');
 import file_flag = require('./file_flag');
-import buffer = require('./buffer');
-import path = require('./node_path');
+import path = require('path');
 import node_fs_stats = require('./node_fs_stats');
 
 import ApiError = api_error.ApiError;
 import ErrorCode = api_error.ErrorCode;
 import FileFlag = file_flag.FileFlag;
-import Buffer = buffer.Buffer;
 
 declare var __numWaiting: number;
 declare var setImmediate: (cb: Function) => void;

@@ -3,15 +3,13 @@ import preload_file = require('../generic/preload_file');
 import file_system = require('../core/file_system');
 import file_flag = require('../core/file_flag');
 import node_fs_stats = require('../core/node_fs_stats');
-import buffer = require('../core/buffer');
 import api_error = require('../core/api_error');
 import file = require('../core/file');
-import path = require('../core/node_path');
+import path = require('path');
 import browserfs = require('../core/browserfs');
-import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
+//import buffer_core_arraybuffer = require('../core/buffer_core_arraybuffer');
 import async = require('async');
 
-import Buffer = buffer.Buffer;
 import Stats = node_fs_stats.Stats;
 import ApiError = api_error.ApiError;
 import ErrorCode = api_error.ErrorCode;
@@ -23,6 +21,7 @@ export class DropboxFile extends preload_file.PreloadFile implements file.File {
   }
 
   public sync(cb: (e?: api_error.ApiError) => void): void {
+/*
     if (this.isDirty()) {
       var buffer = this.getBuffer();
       // XXX: Typing hack.
@@ -44,8 +43,9 @@ export class DropboxFile extends preload_file.PreloadFile implements file.File {
         cb(e);
       });
     } else {
+*/
       cb();
-    }
+    //}
   }
 
   public close(cb: (e?: api_error.ApiError) => void): void {
@@ -163,7 +163,7 @@ export class DropboxFileSystem extends file_system.BaseFileSystem implements fil
                 if (error2) {
                   cb(error2);
                 } else {
-                  var file = this._makeFile(path, flags, stat, new Buffer(ab));
+                  var file = this._makeFile(path, flags, stat, new Buffer(<any>ab));
                   cb(null, file);
                 }
               });

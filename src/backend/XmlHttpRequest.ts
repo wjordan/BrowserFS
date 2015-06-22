@@ -1,6 +1,5 @@
 import file_system = require('../core/file_system');
 import file_index = require('../generic/file_index');
-import buffer = require('../core/buffer');
 import api_error = require('../core/api_error');
 import file_flag = require('../core/file_flag');
 import util = require('../core/util');
@@ -10,7 +9,6 @@ import preload_file = require('../generic/preload_file');
 import browserfs = require('../core/browserfs');
 import xhr = require('../generic/xhr');
 
-var Buffer = buffer.Buffer;
 var ApiError = api_error.ApiError;
 var ErrorCode = api_error.ErrorCode;
 var FileFlag = file_flag.FileFlag;
@@ -285,7 +283,7 @@ export class XmlHttpRequest extends file_system.BaseFileSystem implements file_s
       if (err) {
         return cb(err);
       }
-      cb = function(err: api_error.ApiError, arg?: buffer.Buffer) {
+      cb = function(err: api_error.ApiError, arg?: Buffer) {
         fd.close(function(err2: any) {
           if (err == null) {
             err = err2;
@@ -294,12 +292,12 @@ export class XmlHttpRequest extends file_system.BaseFileSystem implements file_s
         });
       };
       var fdCast = <preload_file.NoSyncFile> fd;
-      var fdBuff = <buffer.Buffer> fdCast.getBuffer();
+      var fdBuff = <Buffer> fdCast.getBuffer();
       if (encoding === null) {
         if (fdBuff.length > 0) {
-          return cb(err, fdBuff.sliceCopy());
+          return cb(err, Buffer.concat([fdBuff]));
         } else {
-          return cb(err, new buffer.Buffer(0));
+          return cb(err, new Buffer(0));
         }
       }
       try {
@@ -318,12 +316,12 @@ export class XmlHttpRequest extends file_system.BaseFileSystem implements file_s
     var fd = this.openSync(fname, flag, 0x1a4);
     try {
       var fdCast = <preload_file.NoSyncFile> fd;
-      var fdBuff = <buffer.Buffer> fdCast.getBuffer();
+      var fdBuff = <Buffer> fdCast.getBuffer();
       if (encoding === null) {
         if (fdBuff.length > 0) {
-          return fdBuff.sliceCopy();
+          return Buffer.concat([fdBuff]);
         } else {
-          return new buffer.Buffer(0);
+          return new Buffer(0);
         }
       }
       return fdBuff.toString(encoding);
