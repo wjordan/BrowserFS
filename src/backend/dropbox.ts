@@ -1,5 +1,4 @@
-/// <reference path="../../bower_components/DefinitelyTyped/async/async.d.ts" />
-/// <reference path="../../bower_components/DefinitelyTyped/dropboxjs/dropboxjs.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
 import preload_file = require('../generic/preload_file');
 import file_system = require('../core/file_system');
 import file_flag = require('../core/file_flag');

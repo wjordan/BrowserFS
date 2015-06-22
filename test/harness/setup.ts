@@ -1,5 +1,4 @@
-/// <reference path="../../bower_components/DefinitelyTyped/async/async.d.ts" />
-/// <reference path="../../bower_components/DefinitelyTyped/node/node-0.10.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./mocha.d.ts" />
 import BrowserFS = require('../../src/core/browserfs');
 import file_system = require('../../src/core/file_system');

@@ -1,5 +1,4 @@
-/// <reference path="../../bower_components/DefinitelyTyped/filesystem/filesystem.d.ts" />
-/// <reference path="../../bower_components/DefinitelyTyped/async/async.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
 import preload_file = require('../generic/preload_file');
 import file_system = require('../core/file_system');
 import api_error = require('../core/api_error');

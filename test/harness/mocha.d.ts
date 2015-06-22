@@ -4,7 +4,7 @@
 // Definitions by: Kazi Manzur Rashid <https://github.com/kazimanzurrashid/>, otiai10 <https://github.com/otiai10>, jt000 <https://github.com/jt000>, Vadim Macagon <https://github.com/enlight>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-/// <reference path="../../bower_components/DefinitelyTyped/node/node-0.10.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
 
 interface MochaSetupOptions {
     //milliseconds to wait before considering a test slow
